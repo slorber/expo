@@ -5,7 +5,6 @@ import { Command } from '@expo/commander';
 
 import * as AndroidVersioning from '../versioning/android';
 import * as IosVersioning from '../versioning/ios';
-import { getExpoRepositoryRootDir } from '../Directories';
 import { Platform, getNextSDKVersionAsync } from '../ProjectVersions';
 
 type ActionOptions = {
@@ -13,8 +12,6 @@ type ActionOptions = {
   sdkVersion?: string;
   filenames?: string;
 };
-
-const EXPO_DIR = getExpoRepositoryRootDir();
 
 async function getNextOrAskForSDKVersionAsync(platform: Platform): Promise<string | undefined> {
   const defaultSdkVersion = await getNextSDKVersionAsync(platform);
@@ -59,7 +56,7 @@ async function action(options: ActionOptions) {
       if (options.filenames) {
         return IosVersioning.versionReactNativeIOSFilesAsync(options.filenames, sdkVersion);
       } else {
-        return IosVersioning.addVersionAsync(sdkVersion, EXPO_DIR);
+        return IosVersioning.addVersionAsync(sdkVersion);
       }
     case 'android':
       return AndroidVersioning.addVersionAsync(sdkVersion);
